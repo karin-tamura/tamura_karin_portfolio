@@ -1,0 +1,16 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "logomark",
+    "Prisma",
+    "Firebase",
+    "Nextjs",
+    "shadcn"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.next/**"
+  ]
+}
