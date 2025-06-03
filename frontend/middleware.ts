@@ -1,16 +1,16 @@
 // frontend/middleware.ts
 import { NextRequest, NextResponse } from "next/server";
-import { getCookie } from "cookies-next";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // /admin配下のみ対象
+  // 管理ページのみチェック対象
   if (pathname.startsWith("/admin")) {
-    const loggedIn = request.cookies.get("logged_in")?.value;
+    const cookie = request.cookies.get("logged_in");
+    const isLoggedIn = cookie?.value === "true";
 
-    // Cookieなければ404へリダイレクト
-    if (!loggedIn) {
+    // ログインしていない場合は 404 に強制書き換え
+    if (!isLoggedIn) {
       return NextResponse.rewrite(new URL("/404", request.url));
     }
   }
@@ -18,7 +18,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// 対象となるパス
+// ミドルウェア対象のパス
 export const config = {
   matcher: ["/admin/:path*"],
 };

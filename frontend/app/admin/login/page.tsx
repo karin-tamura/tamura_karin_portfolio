@@ -4,30 +4,36 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { setCookie } from "cookies-next"; // 👈 追加！
+import { setCookie } from "cookies-next"; 
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true); 
+    setError(""); 
+
     try {
-      // 🔐 Firebaseでログイン
+      // Firebaseでログイン
       await signInWithEmailAndPassword(auth, email, password);
 
-      // 🍪 Cookieにログイン状態を保存
+      // Cookieにログイン状態を保存
       setCookie("logged_in", "true", {
         maxAge: 60 * 60, // 1時間
         path: "/",
       });
 
-      // 🚀 ダッシュボードへ遷移
+      // ダッシュボードへ遷移
       router.push("/admin/dashboard");
     } catch (err) {
       setError("ログインに失敗しました。メールアドレスとパスワードを確認してください。");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -42,6 +48,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
+            required
           />
           <input
             type="password"
@@ -49,13 +56,17 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border border-gray-300 p-2 rounded"
+            required
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            disabled={loading}
+            className={`w-full p-2 rounded text-white ${
+              loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+            }`}
           >
-            ログイン
+            {loading ? "ログイン中..." : "ログイン"}
           </button>
         </form>
       </div>

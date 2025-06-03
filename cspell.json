@@ -8,7 +8,9 @@
     "Nextjs",
     "shadcn",
     "vercel",
-    "autoincrement"
+    "autoincrement",
+    "firebaseapp",
+    "appspot"
   ],
   "ignorePaths": [
     "**/node_modules/**",
