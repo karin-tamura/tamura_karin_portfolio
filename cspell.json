@@ -6,7 +6,9 @@
     "Prisma",
     "Firebase",
     "Nextjs",
-    "shadcn"
+    "shadcn",
+    "vercel",
+    "autoincrement"
   ],
   "ignorePaths": [
     "**/node_modules/**",

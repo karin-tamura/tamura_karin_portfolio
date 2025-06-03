@@ -1,10 +1,10 @@
-// frontend/app/admin/login/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { setCookie } from "cookies-next"; // 👈 追加！
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,7 +15,16 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // 🔐 Firebaseでログイン
       await signInWithEmailAndPassword(auth, email, password);
+
+      // 🍪 Cookieにログイン状態を保存
+      setCookie("logged_in", "true", {
+        maxAge: 60 * 60, // 1時間
+        path: "/",
+      });
+
+      // 🚀 ダッシュボードへ遷移
       router.push("/admin/dashboard");
     } catch (err) {
       setError("ログインに失敗しました。メールアドレスとパスワードを確認してください。");
