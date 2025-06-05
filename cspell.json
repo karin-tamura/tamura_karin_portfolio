@@ -2,19 +2,12 @@
   "version": "0.2",
   "language": "en",
   "words": [
-    "logomark",
-    "Prisma",
-    "Firebase",
-    "Nextjs",
-    "shadcn",
-    "vercel",
-    "autoincrement",
+    "Ppntdm",
     "firebaseapp",
-    "appspot"
-  ],
-  "ignorePaths": [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/.next/**"
+    "firebasestorage",
+    "adminsdk",
+    "fbsvc",
+    "Zgtp",
+    "QGLVs"
   ]
 }
