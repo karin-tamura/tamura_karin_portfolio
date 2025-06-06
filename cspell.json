@@ -8,6 +8,9 @@
     "adminsdk",
     "fbsvc",
     "Zgtp",
-    "QGLVs"
+    "QGLVs",
+    "Firestore",
+    "appspot",
+    "vitest"
   ]
 }

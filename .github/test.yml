@@ -1,0 +1,17 @@
+name: Run Vitest + Playwright
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npx vitest run
+      - run: npx playwright install
+      - run: npx playwright test
