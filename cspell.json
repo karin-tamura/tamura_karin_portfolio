@@ -11,6 +11,10 @@
     "QGLVs",
     "Firestore",
     "appspot",
-    "vitest"
+    "vitest",
+    "shadcn",
+    "Tamura",
+    "kakeibo",
+    "Chakra"
   ]
 }

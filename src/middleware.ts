@@ -17,6 +17,11 @@ export async function middleware(req: NextRequest) {
   const token = req.cookies.get('__session')?.value
   const { pathname } = req.nextUrl
 
+  // 認証対象は /admin 以下のみ（他のパスは通過）
+  if (!pathname.startsWith('/admin')) {
+    return NextResponse.next()
+  }
+
   console.log(`[middleware] Accessing ${pathname}`)
 
   if (!token) {
@@ -34,7 +39,7 @@ export async function middleware(req: NextRequest) {
   }
 }
 
-// 適用パス設定
+// ✅ 管理画面のみ認証対象にする
 export const config = {
   matcher: ['/admin/:path*'],
 }
