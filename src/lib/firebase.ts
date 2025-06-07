@@ -2,6 +2,7 @@
 
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore' 
 
 // Firebase 構成情報（環境変数から取得）
 const firebaseConfig = {
@@ -17,5 +18,5 @@ const firebaseConfig = {
 // 初期化（既にあれば再利用）
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig)
 
-// 認証機能をエクスポート
 export const auth = getAuth(app)
+export const db = getFirestore(app) 

@@ -15,16 +15,19 @@ export function LoginForm() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!email || !password) {
-      return
-    }
-
+    if (!email || !password) return
     setLoading(true)
+
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      const uid = userCredential.user.uid
+      console.log('✅ ログイン成功 UID:', uid)
+      console.log('🔐 環境変数UID:', process.env.NEXT_PUBLIC_ADMIN_UID)
+
       router.push('/admin')
     } catch (err) {
-      router.push('/not-found') // ログイン失敗時は 404 表示へ
+      console.error('❌ ログイン失敗:', err)
+      router.push('/not-found')
     } finally {
       setLoading(false)
     }
