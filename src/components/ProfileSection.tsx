@@ -8,14 +8,15 @@ export function ProfileSection() {
         ABOUT ME
       </h2>
 
-      {/* プロフィール画像 */}
-      <Image
-        src="/profile.jpg"
-        alt="プロフィール画像"
-        width={160}
-        height={160}
-        className="rounded-full mx-auto mb-6 shadow-lg border-4 border-white"
-      />
+<div className="relative w-40 aspect-square mx-auto mb-6 rounded-full overflow-hidden shadow-lg border-4 border-white">
+  <Image
+    src="/profile.jpg"
+    alt="プロフィール画像"
+    fill
+    className="object-cover"
+  />
+</div>
+
 
       {/* 名前 */}
       <h3 className="text-2xl font-semibold text-gray-800">田村華鈴</h3>
