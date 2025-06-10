@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { db } from "@/lib/firebase"
 import { collection, addDoc, Timestamp } from "firebase/firestore"
 
 export default function ContactPage() {
-  const [sent, setSent] = useState(false)
+  const router = useRouter()
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -25,7 +26,7 @@ export default function ContactPage() {
         ...form,
         createdAt: Timestamp.now()
       })
-      setSent(true)
+      router.push("/contact/thanks") // ✅ 送信成功後に遷移
     } catch (error) {
       console.error("Firestoreへの送信に失敗:", error)
     }
@@ -84,10 +85,6 @@ export default function ContactPage() {
               className="w-full border border-gray-400 px-3 py-2"
             />
           </div>
-
-          {sent && (
-            <p className="text-teal-500 text-sm">送信ありがとうございました</p>
-          )}
 
           <button type="submit" className="bg-gray-800 text-white px-6 py-2">
             送信する
