@@ -19,6 +19,9 @@
     "IDAQAB",   
     "Bgkq",
     "Bgkqhki",
-    "Chakra"   
+    "Chakra",
+    "autoincrement",
+    "wrongpassword",
+    "pwsh"
   ]
 }

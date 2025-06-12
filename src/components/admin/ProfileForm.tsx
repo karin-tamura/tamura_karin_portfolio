@@ -115,7 +115,7 @@ export function ProfileForm() {
         {loading ? '保存中…' : '保存'}
       </button>
 
-      {success && <p className="text-green-600 mt-2">保存しました！</p>}
+      {success && <p className="text-green-600 mt-2">保存しました</p>}
     </form>
   )
 }

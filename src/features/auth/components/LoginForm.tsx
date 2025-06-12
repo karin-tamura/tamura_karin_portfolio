@@ -10,46 +10,49 @@ export function LoginForm() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('✅ handleLogin 発火') // ← 追加
-
     setLoading(true)
-    setError('')
+
+    // 🔽 空欄チェック：未入力なら即 /not-found に遷移
+    if (!email || !password) {
+      console.warn('⚠️ メールまたはパスワードが未入力 → /not-found に遷移')
+      router.push('/not-found')
+      return
+    }
+
+    console.log('✅ フォーム送信開始')
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const uid = userCredential.user.uid
 
-      console.log('✅ ログイン成功 UID:', uid)
-      console.log('🔐 環境変数 UID:', process.env.NEXT_PUBLIC_ADMIN_UID)
+      console.log('✅ Firebaseログイン成功: UID =', uid)
+      console.log('🔐 環境変数 UID =', process.env.NEXT_PUBLIC_ADMIN_UID)
 
-      if (!process.env.NEXT_PUBLIC_ADMIN_UID) {
-        console.warn('⚠️ .env.local に NEXT_PUBLIC_ADMIN_UID が定義されていません')
-      }
-
-      if (uid !== process.env.NEXT_PUBLIC_ADMIN_UID) {
-        setError('管理者としての認可がありません。')
+      if (!process.env.NEXT_PUBLIC_ADMIN_UID || uid !== process.env.NEXT_PUBLIC_ADMIN_UID) {
+        console.warn('⚠️ UID 不一致または環境変数未設定 → /not-found に遷移')
         router.push('/not-found')
         return
       }
 
+      console.log('✅ UID一致 → /admin に遷移します')
       router.push('/admin')
     } catch (err) {
-      console.error('❌ ログイン失敗:', err)
-      setError('メールアドレスまたはパスワードが正しくありません。')
+      console.error('❌ Firebaseログイン失敗:', err)
+      router.push('/not-found') // 💡 ここで setError() は呼ばない
     } finally {
       setLoading(false)
+      console.log('ℹ️ ログイン処理完了')
     }
   }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-white px-4">
       <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        {/* 左側の説明 */}
+        {/* 左側 */}
         <div className="flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-2">管理者ログイン</h1>
           <p className="text-gray-700 text-sm">
@@ -57,14 +60,17 @@ export function LoginForm() {
           </p>
         </div>
 
-        {/* 右側のフォーム */}
+        {/* 右側 */}
         <form
           onSubmit={handleLogin}
           className="space-y-6 border rounded-lg p-8 shadow-sm bg-gray-50"
         >
           <div className="space-y-2">
-            <label className="block text-sm text-gray-700">メールアドレス</label>
+            <label htmlFor="email" className="block text-sm text-gray-700">
+              メールアドレス
+            </label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -75,9 +81,12 @@ export function LoginForm() {
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm text-gray-700">パスワード</label>
+            <label htmlFor="password" className="block text-sm text-gray-700">
+              パスワード
+            </label>
             <div className="relative">
               <input
+                id="password"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,8 +103,6 @@ export function LoginForm() {
               </button>
             </div>
           </div>
-
-          {error && <p className="text-sm text-red-600">{error}</p>}
 
           <button
             type="submit"

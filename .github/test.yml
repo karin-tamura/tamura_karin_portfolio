@@ -5,13 +5,23 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install
-      - run: npx vitest run
-      - run: npx playwright install
-      - run: npx playwright test
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Unit Tests (Vitest)
+        run: npx vitest run
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run E2E Tests (Playwright)
+        run: npx playwright test

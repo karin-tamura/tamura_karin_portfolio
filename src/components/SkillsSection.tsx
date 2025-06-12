@@ -55,7 +55,7 @@ export function SkillsSection() {
       skills: [
         { name: "Vitest", description: "ユニットテスト用ライブラリ" },
         { name: "Supertest", description: "Express APIの正常・異常系テスト" },
-        { name: "CI導入想定", description: "GitHub Actions等でテスト実行可能な構成" },
+        { name: "CI導入", description: "GitHub Actions等でテスト実行可能な構成" },
       ],
     },
     {
