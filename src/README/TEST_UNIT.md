@@ -104,8 +104,75 @@ describe('getCurrentIdToken', () => {
 
 ---
 
-## 📦 今後の拡張候補
-- テスト駆動開発（TDD）によるロジック先行設計
-- レッジ測定としきい値設定（--coverage）
-- カスタム React フック用ユニットテストの導入
-- CI におけるユニットテスト通過チェック
+## 🛠 skills APIユーティリティのユニットテスト
+
+### 🔧 バリデーション関数（isValidSkillName, isValidDescription）
+
+```ts
+// src/utils/validation.ts
+export function isValidSkillName(name: string): boolean {
+  return name.trim().length > 0 && name.length <= 50
+}
+
+export function isValidDescription(description: string): boolean {
+  return description.trim().length <= 200
+}
+```
+
+### ✅ テストケース例
+```ts
+import { describe, it, expect } from 'vitest'
+import { isValidSkillName, isValidDescription } from '../validation'
+
+describe('isValidSkillName', () => {
+  it('空文字列は無効', () => {
+    expect(isValidSkillName('')).toBe(false)
+  })
+
+  it('50文字以内は有効', () => {
+    expect(isValidSkillName('TypeScript')).toBe(true)
+  })
+
+  it('51文字以上は無効', () => {
+    expect(isValidSkillName('a'.repeat(51))).toBe(false)
+  })
+})
+
+describe('isValidDescription', () => {
+  it('200文字以内は有効', () => {
+    expect(isValidDescription('これは説明です')).toBe(true)
+  })
+
+  it('201文字以上は無効', () => {
+    expect(isValidDescription('a'.repeat(201))).toBe(false)
+  })
+})
+```
+
+### 📝 補足：
+- サーバーサイドの /api/skills POST エンドポイントでも使用可能な汎用バリデーション関数として抽出。
+- フロント／バック双方で同一ロジックを再利用することで、バリデーションの一貫性を担保。
+
+--- 
+
+### テスト結果
+```pwsh
+PS C:\portfolio-project> npm run test:unit
+>>
+
+> test:unit
+> vitest run
+
+
+ RUN  v3.2.3 C:/portfolio-project
+
+ ✓ src/utils/__tests__/validation.test.ts (6 tests) 7ms
+ ✓ src/tests/api/skills.test.ts (2 tests) 59ms
+
+ Test Files  2 passed (2)
+      Tests  8 passed (8)
+   Start at  18:26:10
+   Duration  1.45s (transform 162ms, setup 0ms, collect 592ms, tests 67ms, environment 1ms, prepare 924ms)
+```
+
+

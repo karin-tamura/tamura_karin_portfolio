@@ -1,7 +1,7 @@
 // src/index.ts
 import express from 'express'
-import adminRouter from './routes/admin'
-import authRouter from './routes/auth' 
+import adminRouter from './server/routes/admin'
+import authRouter from './server/routes/auth' 
 
 const app = express()
 

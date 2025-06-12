@@ -8,8 +8,31 @@ datasource db {
 }
 
 model Profile {
-  id       Int    @id @default(1)
-  name     String
-  bio      String
-  imageUrl String
+  id        Int     @id @default(1)
+  name      String
+  bio       String
+  imageUrl  String
+  imagePath String?
+}
+
+model SkillCategory {
+  id       Int     @id @default(autoincrement())
+  category String
+  summary  String
+  skills   Skill[]
+}
+
+model Skill {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  categoryId  Int
+  category    SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Achievement {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+  year    Int
 }
