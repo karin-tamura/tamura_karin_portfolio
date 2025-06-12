@@ -73,4 +73,4 @@ tests/
 - DBに保存されたデータとレスポンスの整合性チェック
 - ロールごとのアクセス制御テスト（admin / guest）
 - テスト用 Firebase Admin モックの自動生成
-- GitHub Actions における integration テストの CI 実行
+
