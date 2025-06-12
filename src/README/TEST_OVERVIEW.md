@@ -68,7 +68,6 @@ tests/
 
 ## 📦 今後の拡張候補
 - カバレッジ測定（vitest --coverage）
-- CI による自動テスト実行（GitHub Actions）
 - テスト用モックDBの導入
 - クロスブラウザE2Eテスト（Playwrightの機能）
 - パフォーマンステスト／ロードテストの計画
