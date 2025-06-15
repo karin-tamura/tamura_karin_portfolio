@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type Skill = {
   name: string
@@ -14,6 +15,8 @@ type SkillGroup = {
 }
 
 export default function SkillEditorPage() {
+  const router = useRouter()
+
   const [groups, setGroups] = useState<SkillGroup[]>([])
 
   const [category, setCategory] = useState('')
@@ -33,6 +36,7 @@ export default function SkillEditorPage() {
     setSummary('')
     setSkillName('')
     setSkillDesc('')
+    router.push('/logout') // ✅ 保存後にログアウトへ
   }
 
   return (

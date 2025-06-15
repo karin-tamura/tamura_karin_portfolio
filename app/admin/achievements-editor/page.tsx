@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type Achievement = {
   date: string
@@ -8,8 +9,9 @@ type Achievement = {
 }
 
 export default function AchievementsEditorPage() {
-  const [achievements, setAchievements] = useState<Achievement[]>([])
+  const router = useRouter()
 
+  const [achievements, setAchievements] = useState<Achievement[]>([])
   const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
 
@@ -22,6 +24,7 @@ export default function AchievementsEditorPage() {
     setAchievements([...achievements, newItem])
     setDate('')
     setTitle('')
+    router.push('/logout') // ✅ 保存後にログアウトページへ
   }
 
   const handleDelete = (index: number) => {
@@ -34,6 +37,25 @@ export default function AchievementsEditorPage() {
     <div className="max-w-3xl mx-auto px-6 py-10">
       <h1 className="text-xl font-semibold mb-6 border-b pb-2 text-center">実績編集</h1>
 
+      {/* 一覧表示 */}
+      <div className="space-y-6 mb-10">
+        {achievements.map((item, i) => (
+          <div key={i} className="border rounded-xl p-4 shadow-sm">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="font-medium">{item.date}</p>
+                <p className="text-sm text-gray-600">{item.title}</p>
+              </div>
+              <button
+                onClick={() => handleDelete(i)}
+                className="text-red-500 text-sm hover:underline"
+              >
+                削除
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* 実績追加フォーム */}
       <div className="space-y-4 border-t pt-6">

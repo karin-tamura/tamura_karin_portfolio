@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Router, Request, Response } from 'express'
 import { getAuth } from 'firebase-admin/auth'
 import { asyncHandler } from '../../middleware/asyncHandler'
 
@@ -6,22 +6,27 @@ const router = Router()
 
 router.post(
   '/verify',
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const token = req.body.token
 
     if (!token) {
-      return res.status(400).json({ message: 'Token is required' })
+      res.status(400).json({ message: 'Token is required' })
+      return
     }
 
-    const decoded = await getAuth().verifyIdToken(token)
+    try {
+      const decoded = await getAuth().verifyIdToken(token)
 
-    if (decoded.admin === true) {
-      return res.status(200).json({
-        uid: decoded.uid,
-        email: decoded.email,
-      })
-    } else {
-      return res.status(403).json({ message: 'Access denied: not admin' })
+      if (decoded.admin === true) {
+        res.status(200).json({
+          uid: decoded.uid,
+          email: decoded.email,
+        })
+      } else {
+        res.status(403).json({ message: 'Access denied: not admin' })
+      }
+    } catch (error) {
+      res.status(401).json({ message: 'Invalid token', error })
     }
   })
 )

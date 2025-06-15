@@ -10,7 +10,7 @@ export default function AdminNav() {
 
   return (
     <nav className="flex justify-center gap-x-8 py-6 text-base border-b">
-      <a href="/admin/profile-editor" className={linkClass('/admin/profile-editor')}>プロフィール編集</a>
+      <a href="/admin/profile-editor" className={linkClass('/admin/')}>プロフィール編集</a>
       <a href="/admin/skill-editor" className={linkClass('/admin/skill-editor')}>スキル編集</a>
       <a href="/admin/achievements-editor" className={linkClass('/admin/achievements-editor')}>実績編集</a>
     </nav>
