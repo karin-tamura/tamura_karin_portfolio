@@ -1,99 +1,80 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-// スキルの型定義
-type Skill = {
-  name: string
-  description: string
-}
+export default function ProfileEditorPage() {
+  const router = useRouter()
 
-export default function SkillEditorPage() {
-  const [category, setCategory] = useState('')
-  const [summary, setSummary] = useState('')
-  const [skills, setSkills] = useState<Skill[]>([{ name: '', description: '' }])
-  const [loading, setLoading] = useState(false)
+  const [name, setName] = useState('')
+  const [bio, setBio] = useState('')
+  const [image, setImage] = useState<File | null>(null)
 
-  // スキルを追加
-  const addSkill = () => {
-    setSkills([...skills, { name: '', description: '' }])
-  }
-
-  // スキルの更新
-  const updateSkill = (
-    index: number,
-    field: keyof Skill,
-    value: string
-  ) => {
-    const updated = [...skills]
-    updated[index][field] = value
-    setSkills(updated)
-  }
-
-  // 保存処理
-  const handleSubmit = async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/skills', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category, summary, skills }),
-      })
-      const data = await res.json()
-      alert(data.message || data.error)
-    } catch (e) {
-      alert('エラーが発生しました')
-    } finally {
-      setLoading(false)
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    alert('プロフィールが保存されました')
+    router.push('/logout')
   }
 
   return (
-    <div className="p-6 max-w-xl mx-auto space-y-4">
-      <h2 className="text-xl font-bold">スキルカテゴリ追加</h2>
+    <div className="max-w-2xl mx-auto px-6 py-10">
+      <h1 className="text-xl font-semibold mb-6 border-b pb-2 text-center">プロフィール編集</h1>
 
-      <input
-        className="w-full border p-2 rounded"
-        placeholder="カテゴリ名"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      <input
-        className="w-full border p-2 rounded"
-        placeholder="概要"
-        value={summary}
-        onChange={(e) => setSummary(e.target.value)}
-      />
-
-      <div className="space-y-2">
-        {skills.map((skill, idx) => (
-          <div key={idx} className="flex gap-2">
-            <input
-              className="flex-1 border p-2 rounded"
-              placeholder="スキル名"
-              value={skill.name}
-              onChange={(e) => updateSkill(idx, 'name', e.target.value)}
-            />
-            <input
-              className="flex-1 border p-2 rounded"
-              placeholder="説明"
-              value={skill.description}
-              onChange={(e) => updateSkill(idx, 'description', e.target.value)}
-            />
+      {/* プロフィール画像 */}
+      <div className="flex flex-col items-center mb-10">
+        {image ? (
+          <img
+            src={URL.createObjectURL(image)}
+            alt="プロフィール画像"
+            className="w-32 h-32 object-cover rounded-full border"
+          />
+        ) : (
+          <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 text-sm border">
+            No Image
           </div>
-        ))}
-        <button onClick={addSkill} className="text-sm text-blue-600 underline">
-          + スキルを追加
-        </button>
+        )}
+
+        <label className="mt-4 text-sm font-medium">プロフィール画像</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files?.[0] || null)}
+          className="mt-1"
+        />
       </div>
 
-      <button
-        onClick={handleSubmit}
-        className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 disabled:opacity-50"
-        disabled={loading}
-      >
-        {loading ? '送信中...' : '保存'}
-      </button>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium mb-1">名前</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+            placeholder="例: 田村華鈴"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">紹介文</label>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            rows={4}
+            className="w-full border px-3 py-2 rounded"
+            placeholder="例: 地域と女性の未来をデザインする、元公務員エンジニア。"
+          />
+        </div>
+
+        <div className="text-center pt-4">
+          <button
+            type="submit"
+            className="bg-black text-white px-6 py-2 rounded hover:opacity-80 transition"
+          >
+            保存
+          </button>
+        </div>
+      </form>
     </div>
   )
 }

@@ -1,10 +1,18 @@
-import express from 'express'
-import { getProfile, updateProfile } from '../../controllers/profileController'
-import { asyncHandler } from '../../middleware/asyncHandler'
+import { Request, Response } from 'express'
+import { prisma } from '../../lib/prisma'
 
-const router = express.Router()
+export const getProfile = async (_req: Request, res: Response) => {
+  const profile = await prisma.profile.findFirst()
+  res.json(profile) // ✅ return は付けない
+}
 
-router.get('/', asyncHandler(getProfile))
-router.post('/', asyncHandler(updateProfile))
+export const updateProfile = async (req: Request, res: Response) => {
+  const { name, imagePath } = req.body
 
-export default router
+  const updated = await prisma.profile.update({
+    where: { id: 1 },
+    data: { name, imagePath },
+  })
+
+  res.json(updated) // ✅ return は付けない
+}
