@@ -1,53 +1,60 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '@/lib/firebase'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     // 🔽 空欄チェック：未入力なら即 /not-found に遷移
     if (!email || !password) {
-      console.warn('⚠️ メールまたはパスワードが未入力 → /not-found に遷移')
-      router.push('/not-found')
-      return
+      console.warn("⚠️ メールまたはパスワードが未入力 → /not-found に遷移");
+      router.push("/not-found");
+      return;
     }
 
-    console.log('✅ フォーム送信開始')
+    console.log("✅ フォーム送信開始");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      const uid = userCredential.user.uid
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const uid = userCredential.user.uid;
 
-      console.log('✅ Firebaseログイン成功: UID =', uid)
-      console.log('🔐 環境変数 UID =', process.env.NEXT_PUBLIC_ADMIN_UID)
+      console.log("✅ Firebaseログイン成功: UID =", uid);
+      console.log("🔐 環境変数 UID =", process.env.NEXT_PUBLIC_ADMIN_UID);
 
-      if (!process.env.NEXT_PUBLIC_ADMIN_UID || uid !== process.env.NEXT_PUBLIC_ADMIN_UID) {
-        console.warn('⚠️ UID 不一致または環境変数未設定 → /not-found に遷移')
-        router.push('/not-found')
-        return
+      if (
+        !process.env.NEXT_PUBLIC_ADMIN_UID ||
+        uid !== process.env.NEXT_PUBLIC_ADMIN_UID
+      ) {
+        console.warn("⚠️ UID 不一致または環境変数未設定 → /not-found に遷移");
+        router.push("/not-found");
+        return;
       }
 
-      console.log('✅ UID一致 → /admin に遷移します')
-      router.push('/admin')
+      console.log("✅ UID一致 → /admin に遷移します");
+      router.push("/admin");
     } catch (err) {
-      console.error('❌ Firebaseログイン失敗:', err)
-      router.push('/not-found') // 💡 ここで setError() は呼ばない
+      console.error("❌ Firebaseログイン失敗:", err);
+      router.push("/not-found"); // 💡 ここで setError() は呼ばない
     } finally {
-      setLoading(false)
-      console.log('ℹ️ ログイン処理完了')
+      setLoading(false);
+      console.log("ℹ️ ログイン処理完了");
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-white px-4">
@@ -87,11 +94,11 @@ export function LoginForm() {
             <div className="relative">
               <input
                 id="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full border px-4 py-2 rounded pr-16"
-                placeholder="********"
+                placeholder="password"
                 required
               />
               <button
@@ -99,7 +106,7 @@ export function LoginForm() {
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-blue-500"
               >
-                {showPassword ? '非表示' : '表示'}
+                {showPassword ? "非表示" : "表示"}
               </button>
             </div>
           </div>
@@ -109,7 +116,7 @@ export function LoginForm() {
             disabled={loading}
             className="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-700 transition disabled:opacity-50"
           >
-            {loading ? 'ログイン中...' : 'LOGIN'}
+            {loading ? "ログイン中..." : "LOGIN"}
           </button>
 
           <p className="mt-4 text-sm text-left">
@@ -120,5 +127,5 @@ export function LoginForm() {
         </form>
       </div>
     </div>
-  )
+  );
 }

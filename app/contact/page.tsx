@@ -1,44 +1,50 @@
-'use client'
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { db } from "@/lib/firebase"
-import { collection, addDoc, Timestamp } from "firebase/firestore"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 export default function ContactPage() {
-  const router = useRouter()
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     email: "",
     subject: "",
-    message: ""
-  })
+    message: "",
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       await addDoc(collection(db, "contacts"), {
         ...form,
-        createdAt: Timestamp.now()
-      })
-      router.push("/contact/thanks") // ✅ 送信成功後に遷移
+        createdAt: Timestamp.now(),
+      });
+      router.push("/contact/thanks"); // ✅ 送信成功後に遷移
     } catch (error) {
-      console.error("Firestoreへの送信に失敗:", error)
+      console.error("Firestoreへの送信に失敗:", error);
     }
-  }
+  };
 
   return (
     <main className="px-6 py-12 max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row gap-12">
         {/* 左側：連絡先 */}
         <div className="md:w-1/3">
-          <h2 className="text-xl font-semibold tracking-widest mb-4">CONTACT</h2>
-          <p className="text-gray-700 text-sm mb-1">hana.ringo.yuzu.ringo@gmail.com</p>
+          <h2 className="text-xl font-semibold tracking-widest mb-4">
+            CONTACT
+          </h2>
+          <p className="text-gray-700 text-sm mb-1">
+            tamura.karin1013@gmail.com
+          </p>
           <p className="text-gray-700 text-sm">Tel: 080-8556-0507</p>
         </div>
 
@@ -55,7 +61,9 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <label className="block mb-1 text-sm font-medium">メールアドレス *</label>
+            <label className="block mb-1 text-sm font-medium">
+              メールアドレス *
+            </label>
             <input
               type="email"
               name="email"
@@ -76,7 +84,9 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <label className="block mb-1 text-sm font-medium">メッセージを入力…</label>
+            <label className="block mb-1 text-sm font-medium">
+              メッセージを入力…
+            </label>
             <textarea
               name="message"
               value={form.message}
@@ -99,5 +109,5 @@ export default function ContactPage() {
         </form>
       </div>
     </main>
-  )
+  );
 }

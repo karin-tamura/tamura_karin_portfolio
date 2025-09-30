@@ -1,34 +1,56 @@
-import Image from "next/image"
+// src/components/ProfileSection.tsx
+"use client";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 export function ProfileSection() {
   return (
-    <section className="my-24 px-6 text-center">
-      {/* 見出し */}
-      <h2 className="text-3xl font-bold mb-10 tracking-wide text-gray-900">
-        ABOUT ME
-      </h2>
+    <section className="py-20 px-6">
+      <div className="max-w-screen-xl mx-auto grid lg:grid-cols-[350px,1fr,320px] gap-12 items-center">
+        {/* 左：プロフィール画像（ふわふわ浮遊） */}
+        <motion.div
+          className="flex justify-center lg:justify-start"
+          animate={{ y: [0, -15, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+        >
+          <div className="relative w-72 h-72 rounded-full overflow-hidden shadow-lg ring-4 ring-white">
+            <Image
+              src="/profile.jpg"
+              alt="プロフィール画像"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </motion.div>
 
-<div className="relative w-40 aspect-square mx-auto mb-6 rounded-full overflow-hidden shadow-lg border-4 border-white">
-  <Image
-    src="/profile.jpg"
-    alt="プロフィール画像"
-    fill
-    className="object-cover"
-  />
-</div>
+        {/* 中央：テキスト（中央寄せに変更） */}
+        <div className="text-center mx-auto">
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-wide text-gray-900 mb-6">
+            ABOUT ME
+          </h2>
 
+          <div className="text-[17px] lg:text-[18px] text-gray-800 leading-8 space-y-5 max-w-[60ch] mx-auto">
+            <p>島で育ちの見習いデザイナー、田村華鈴です。</p>
+            <p>人に寄り添うデザインを届けられるよう、日々学んでいます。</p>
+            <p>誰もが安心して使える体験をつくることを目指しています。</p>
+          </div>
+        </div>
 
-      {/* 名前 */}
-      <h3 className="text-2xl font-semibold text-gray-800">田村華鈴</h3>
-
-      {/* 自己紹介文 */}
-      <p className="mt-6 text-base md:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto whitespace-pre-line font-medium">
-        平成13年10月13日、島生まれ、島育ちの見習いエンジニアの華鈴と申します。<br />
-        新卒では故郷の町役場で税務課職員として課税業務をしておりました。<br />
-        しかし、業務の中で、DX化に追い付くことができず、損をしてしまう高齢者の存在を見聞きし、<br />
-        サービスを使う側ではなく作る側になりたいと思い、転職を決意しました。<br />
-        社会学の知識を活かし、クライアントに寄り添った制作のできるエンジニアを目指しています。
-      </p>
+        {/* 右：猫イラスト（ふわふわ浮遊、大きめ） */}
+        <motion.div
+          className="flex justify-center lg:justify-end"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+        >
+          <Image
+            src="/docs/cat.png"
+            alt="猫イラスト"
+            width={320}
+            height={320}
+            className="opacity-80"
+          />
+        </motion.div>
+      </div>
     </section>
-  )
+  );
 }
