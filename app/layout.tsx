@@ -1,6 +1,7 @@
 // app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -14,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>
+      <body className="flex flex-col min-h-screen">
         {/* ふわふわ装飾（水色） */}
         <div className="w-full h-16 bg-sky-100 relative overflow-hidden">
           <svg
@@ -31,7 +32,22 @@ export default function RootLayout({
           </svg>
         </div>
 
-        {children}
+        {/* コンテンツ */}
+        <main className="flex-1">{children}</main>
+
+        {/* フッター */}
+        <footer className="w-full bg-white py-10 flex flex-col items-center border-t">
+          <Image
+            src="/docs/dog-cat-line.png" // publicフォルダに保存したファイル
+            alt="Dog and Cat illustration"
+            width={800} // 横に広げて見やすく
+            height={300}
+            className="opacity-80 max-w-full h-auto"
+          />
+          <p className="text-sm text-gray-500 mt-4">
+            © 2025 Karin Tamura. All rights reserved.
+          </p>
+        </footer>
       </body>
     </html>
   );
