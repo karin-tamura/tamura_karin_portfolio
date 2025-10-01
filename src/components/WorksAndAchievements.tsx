@@ -57,7 +57,7 @@ export function WorksAndAchievements() {
                 </a>
 
                 <a
-                  href="https://github.com/karin-tamura/sendai-sick-childcare-search"
+                  href="https://github.com/karin-tamura/sendai-sick-childcare-search.git"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border hover:shadow transition text-sm"
