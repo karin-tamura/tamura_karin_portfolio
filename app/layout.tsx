@@ -40,8 +40,8 @@ export default function RootLayout({
           <Image
             src="/docs/dog-cat-line.png" // publicフォルダに保存したファイル
             alt="Dog and Cat illustration"
-            width={800} // 横に広げて見やすく
-            height={300}
+            width={600} // 横に広げて見やすく
+            height={200}
             className="opacity-80 max-w-full h-auto"
           />
           <p className="text-sm text-gray-500 mt-4">
